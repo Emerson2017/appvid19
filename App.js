@@ -1,19 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar} from 'react-native';
+
+import Start from './src/pages/Start'
+import Login from './src/pages/Login';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js</Text>
-    </View>
+    <>
+      <StatusBar barStyle='light-content' backgroundColor='transparent' translucent/>
+      <Start/>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
