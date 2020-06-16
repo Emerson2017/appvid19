@@ -17,7 +17,7 @@ const Start = () =>{
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 3}}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Covid-19</Text>
           <Text style={{color: 'white', fontWeight: 'bold',fontStyle: 'italic', marginBottom: 30}}>Aplicação destianada a analise de casos. </Text>
-          <Button title="COMEÇAR" buttonStyle={{height: 50, backgroundColor: 'white', borderRadius: 25, width: 300, }} titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}}/>
+          <Button title="Começar" buttonStyle={{height: 50, backgroundColor: 'white', borderRadius: 25, width: 300, }} titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}}/>
         </View>
       </LinearGradient>
     </>

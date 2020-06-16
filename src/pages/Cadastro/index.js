@@ -3,20 +3,21 @@ import { StyleSheet, View, TextInput, Image, Text, Animated} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
+
 import firebaseConfig from '../../../firebaseConfig';
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+firebase.initializeApp(firebaseConfig);
 
-const Login = () =>{
+const Cadastro = () =>{
 
   const [email, setEmail] = useState([]);
   const [senha, setSenha] = useState([]);
+  const [confirmSenha, setConfirmSenha] = useState([]);
+  const [confirmSenhaText, setConfirmSenhaText] = useState('');
 
-  const Logar = (email, senha) =>{
 
-    firebase.auth().signInWithEmailAndPassword(email, senha).then(function(user){console.log(user)});
+  const Logar = () =>{
+    firebase.auth().createUserWithEmailAndPassword(email, senha);
   }
   
   return (
@@ -29,7 +30,9 @@ const Login = () =>{
 
 
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 5}}>
-
+        <Animated.View>
+  <Text style={{fontSize: 15, marginBottom: 20, fontWeight: 'bold', fontStyle: 'italic', color: '#e74c3c'}}>{confirmSenhaText}</Text>
+       </Animated.View>
         <TextInput style = {styles.input}
                placeholder = "    Email"
                placeholderTextColor = "white"
@@ -42,11 +45,16 @@ const Login = () =>{
                autoCapitalize = "none"
                onChangeText = {value => setSenha(value)}/>
 
-          <Button title="Entrar" 
+        <TextInput style = {styles.input}
+               placeholder = "    Confirmar Senha"
+               placeholderTextColor = "white"
+               autoCapitalize = "none"
+               onChangeText = {value => setConfirmSenha(value)}/>
+
+          <Button title="Cadastrar" 
           buttonStyle={{height: 50, backgroundColor: 'white', borderRadius: 25, width: 190, }} 
           titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}} onPress={() => Logar(email, senha)}/>
 
-          <Text style={{color: 'white', fontWeight: 'bold',fontStyle: 'italic', marginTop: 10}}>Cadastra-se</Text>
 
         </View>
       </LinearGradient>
@@ -72,4 +80,4 @@ const styles = StyleSheet.create({
      },
 });
 
-export default Login;
+export default Cadastro;
