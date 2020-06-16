@@ -1,22 +1,29 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, TextInput, Image, Text, Animated} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 import firebaseConfig from '../../../firebaseConfig';
+import { useNavigation  } from '@react-navigation/native';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
 const Login = () =>{
+  // const navigation = useNavigation();
 
   const [email, setEmail] = useState([]);
   const [senha, setSenha] = useState([]);
 
   const Logar = (email, senha) =>{
 
-    firebase.auth().signInWithEmailAndPassword(email, senha).then(function(user){console.log(user)});
+    firebase.auth().signInWithEmailAndPassword(email, senha)
+    .then(function(user){
+      console.log(user)
+    });
+
+    // navigation.navigate('Home')
   }
   
   return (
@@ -44,7 +51,8 @@ const Login = () =>{
 
           <Button title="Entrar" 
           buttonStyle={{height: 50, backgroundColor: 'white', borderRadius: 25, width: 190, }} 
-          titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}} onPress={() => Logar(email, senha)}/>
+          titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}} 
+          onPress={() => Logar(email, senha)}/>
 
           <Text style={{color: 'white', fontWeight: 'bold',fontStyle: 'italic', marginTop: 10}}>Cadastra-se</Text>
 

@@ -5,35 +5,35 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
-      <ImageBackground source={require('./assets/images/background-virus.png')} style={styles.backgroundHeader}>
-        <View style={styles.subcontainerHeader}>
-          <View style={styles.containerHeader1}>
-            <View style={styles.containeMenu}>
-              <TouchableOpacity>
+        <ImageBackground source={require('../../../assets/images/background-virus.png')} style={styles.backgroundHeader}>
+          <View style={styles.subcontainerHeader}>
+            <View style={styles.containerHeader1}>
+              <View style={styles.containeMenu}>
+                <TouchableOpacity>
+                  <Image 
+                    source={require('../../../assets/images/menu.png')} 
+                    style={styles.iconMenu}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.containerIcon}>
+                <View style={styles.ContainerphotoPerfil}>
                 <Image 
-                  source={require('./assets/images/menu.png')} 
-                  style={styles.iconMenu}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.containerIcon}>
-              <View style={styles.ContainerphotoPerfil}>
-              <Image 
-                  source={{uri: 'https://www.pngkey.com/png/detail/882-8822155_sonrisa-con-brackets-png-pessoas-sorrindo-com-aparelho.png'}}
-                  style={styles.photoPerfil}
-                />
+                    source={{uri: 'https://www.pngkey.com/png/detail/882-8822155_sonrisa-con-brackets-png-pessoas-sorrindo-com-aparelho.png'}}
+                    style={styles.photoPerfil}
+                  />
+                </View>
               </View>
             </View>
+            <View style={styles.containerHeader2}>
+              <Text style={styles.textHeader2}>COVID 19</Text>
+            </View>
+            <View style={styles.containerHeader3}>
+              <Text style={styles.text1Header3}>Meios de combate e retenção ao coronavírus</Text>
+              <Text style={styles.text2Header3}>Obtenha os dados mais atualizados sobre COVID 19 em todo o mundo e saiba como se prevenir</Text>
+            </View>
           </View>
-          <View style={styles.containerHeader2}>
-            <Text style={styles.textHeader2}>COVID 19</Text>
-          </View>
-          <View style={styles.containerHeader3}>
-            <Text style={styles.text1Header3}>Meios de combate e retenção ao coronavírus</Text>
-            <Text style={styles.text2Header3}>Obtenha os dados mais atualizados sobre COVID 19 em todo o mundo e saiba como se prevenir</Text>
-          </View>
-        </View>
-      </ImageBackground> 
+        </ImageBackground> 
       </View>
       <View style={styles.containerBody}>
         <View style={styles.subcontainerBody}>
@@ -45,7 +45,7 @@ export default function App() {
                 <View style={styles.sintoma}>
                     <View style={styles.containerImageSintoma}>
                         <View style={styles.boxImageSintoma}>
-                            <ImageBackground style={styles.imageSintoma} source={require('./assets/images/febre.png')}>
+                            <ImageBackground style={styles.imageSintoma} source={require('../../../assets/images/febre.png')}>
                             </ImageBackground>
                         </View>    
                     </View>
@@ -56,7 +56,7 @@ export default function App() {
                 <View style={styles.sintoma}>
                     <View style={styles.containerImageSintoma}>
                         <View style={styles.boxImageSintoma}>
-                            <ImageBackground style={styles.imageSintoma} source={require('./assets/images/tosse.png')}>
+                            <ImageBackground style={styles.imageSintoma} source={require('../../../assets/images/tosse.png')}>
                             </ImageBackground>
                         </View>    
                     </View>
@@ -67,7 +67,7 @@ export default function App() {
                 <View style={styles.sintoma}>
                     <View style={styles.containerImageSintoma}>
                         <View style={styles.boxImageSintoma}>
-                            <ImageBackground style={styles.imageSintoma} source={require('./assets/images/dorCabeca.png')}>
+                            <ImageBackground style={styles.imageSintoma} source={require('../../../assets/images/dorCabeca.png')}>
                             </ImageBackground>
                         </View>    
                     </View>
@@ -78,7 +78,7 @@ export default function App() {
                 <View style={styles.sintoma}>
                     <View style={styles.containerImageSintoma}>
                         <View style={styles.boxImageSintoma}>
-                            <ImageBackground style={styles.imageSintoma} source={require('./assets/images/dorPeito.png')}>
+                            <ImageBackground style={styles.imageSintoma} source={require('../../../assets/images/dorPeito.png')}>
                             </ImageBackground>
                         </View>    
                     </View>
@@ -95,7 +95,7 @@ export default function App() {
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={styles.prevencao}> 
                 <View style={styles.prevencaoWidth50percentage}>
-                  <Image style={styles.imagePrevencao} source={require('./assets/images/lavarMaos.png')}/>
+                  <Image style={styles.imagePrevencao} source={require('../../../assets/images/lavarMaos.png')}/>
                 </View>
                 <View style={styles.prevencaoWidth50percentage}>
                     <Text style={styles.textPrevencao}>LAVAR</Text>
@@ -104,7 +104,7 @@ export default function App() {
               </View>
               <View style={styles.prevencao}> 
                 <View style={styles.prevencaoWidth50percentage}>
-                  <Image style={{width:33, height: 57}} source={require('./assets/images/cobrirBoca.png')}/>
+                  <Image style={{width:33, height: 57}} source={require('../../../assets/images/cobrirBoca.png')}/>
                 </View>
                 <View style={styles.prevencaoWidth50percentage}>
                     <Text style={styles.textPrevencao}>COBRIR</Text>
@@ -113,7 +113,7 @@ export default function App() {
               </View>
               <View style={styles.prevencao}> 
                 <View style={styles.prevencaoWidth50percentage}>
-                  <Image style={{width: 50, height: 50}} source={require('./assets/images/higiene.png')}/>
+                  <Image style={{width: 50, height: 50}} source={require('../../../assets/images/higiene.png')}/>
                 </View>
                 <View style={styles.prevencaoWidth50percentage}>
                     <Text style={styles.textPrevencao}>HIGIENIZAR</Text>
@@ -122,7 +122,7 @@ export default function App() {
               </View>
               <View style={styles.prevencao}> 
                 <View style={styles.prevencaoWidth50percentage}>
-                  <Image style={{width: 41, height: 49}} source={require('./assets/images/mascara.png')}/>
+                  <Image style={{width: 41, height: 49}} source={require('../../../assets/images/mascara.png')}/>
                 </View>
                 <View style={styles.prevencaoWidth50percentage}>
                   <Text style={styles.textPrevencao}>USAR</Text>
@@ -134,7 +134,7 @@ export default function App() {
           <TouchableOpacity style={{ flexDirection:"row", borderRadius: 18, width: '95%', height:70, backgroundColor: 'white', marginTop:30}}>
             <View style={{ width:'30%', alignItems:"center", justifyContent:"center"}}>
               <Image
-                source={require('./assets/images/map.png')}
+                source={require('../../../assets/images/map.png')}
                 style={{width: 80, height: 40}}
               />
             </View>
@@ -146,7 +146,7 @@ export default function App() {
             
             <View style={{ width:'10%', alignItems: "center", justifyContent:"center"}}>
               <Image
-                source={require('./assets/images/next.png')}
+                source={require('../../../assets/images/next.png')}
                 style={{width:20, height:20}}
               />
             </View>

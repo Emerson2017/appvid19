@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from 'react-native-elements';
+import { useNavigation  } from '@react-navigation/native';
 
 const Start = () =>{
+    const navigation = useNavigation();
+
     return (
 
       <>
@@ -17,7 +20,12 @@ const Start = () =>{
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 3}}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Covid-19</Text>
           <Text style={{color: 'white', fontWeight: 'bold',fontStyle: 'italic', marginBottom: 30}}>Aplicação destianada a analise de casos. </Text>
-          <Button title="Começar" buttonStyle={{height: 50, backgroundColor: 'white', borderRadius: 25, width: 300, }} titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}}/>
+          <Button 
+            title="Começar" 
+            buttonStyle={{height: 50, backgroundColor: 'white', borderRadius: 25, width: 300, }} 
+            titleStyle={{color: '#a958f2', fontWeight: 'bold', fontStyle: 'italic', letterSpacing: 2}}
+            onPress={() => navigation.navigate('Login')}
+          />
         </View>
       </LinearGradient>
     </>
