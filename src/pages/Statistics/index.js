@@ -1,7 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, ImageBackground, View, Text, TouchableOpacity, Image} from 'react-native'
+import { PieChart } from 'react-native-svg-charts'
+
 
 export default function Statics(){
+    const [data, setData] = useState([88992, 35108, 12300])
+
+    const randomColor = ['#FFA500','#66CDAA', '#FF6347'];
+
+    const pieData = data
+        .filter((value) => value > 0)
+        .map((value, index) => ({
+            value,
+            svg: {
+                fill: randomColor[index],
+                onPress: () => console.log('press', index),
+            },
+            key: `pie-${index}`,
+        }))
+
+        function alterData(v1, v2, v3){
+          setData([v1, v2, v3])
+          console.log(data)
+        }        
+
     return (
     <View style={styles.container}>
         <View style={styles.containerHeader}>
@@ -35,7 +57,56 @@ export default function Statics(){
           </ImageBackground> 
         </View>
         <View style={styles.containerBody}>
+            <View style={{elevation: 24 ,flexDirection: "row", marginTop: -100, backgroundColor:'white', width:'90%', borderRadius: 20, height: 170, justifyContent:"center", alignItems:"center" }}>    
+                <PieChart 
+                animate={true}
+                animationDuration={90000} 
+                style={{ height: 130, width: 130, marginLeft: 15 }} 
+                data={pieData} 
+                
+                />
+                <View style={{width:'50%', height: '80%', paddingLeft: 20, paddingRight: 10, flexDirection:"column"}}>
+                    <View style={{flexDirection:"row"}}>
+                        <View style={{height: 15, width: 30, backgroundColor:'#FFA500'}}></View>
+                        <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
+                            <Text style={{textAlign:"center"}}>Confirmados</Text>
+                            <Text style={{fontWeight:'bold', fontSize:15}}>{data[0]}</Text>
+                        </View>
+                    </View>
+                    <View style={{flexDirection:"row", marginTop: 10 }}>
+                        <View style={{height: 15, width: 30, backgroundColor:'#66CDAA'}}></View>
+                        <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
+                            <Text style={{textAlign:"center"}}>Recuperados</Text>
+                            <Text style={{fontWeight:'bold', fontSize:15}}>{data[1]}</Text>
+                        </View>
+                    </View>
+                    <View style={{flexDirection:"row", marginTop: 10}}>
+                        <View style={{height: 15, width: 30, backgroundColor:'#FF6347'}}></View>
+                        <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
+                            <Text style={{textAlign:"center"}}>Mortes</Text>
+                            <Text style={{fontWeight:'bold', fontSize:15, alignSelf:"flex-end"}}>{data[2]}</Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
 
+            <View>
+              <TouchableOpacity onPress={()=>alterData(20, 400, 200)}>
+                <Text>CLICK</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>alterData(230, 4400, 9200)}>
+                <Text>CLICK2</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>alterData(8860, 400, 2200)}>
+                <Text>CLICK2</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>alterData(664, 2200, 8200)}>
+                <Text>CLICK2</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>alterData(207, 7500, 3200)}>
+                <Text>CLICK2</Text>
+              </TouchableOpacity>
+            </View>
         </View>
     </View>
     )
@@ -126,7 +197,8 @@ const styles = StyleSheet.create({
      },
      containerBody:{
        flex: 6,
-       alignSelf: "stretch"
+       alignSelf: "stretch",
+       alignItems:"center"
      },
      ContainerphotoPerfil:{
        height:33,
