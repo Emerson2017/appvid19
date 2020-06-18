@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView, Span } from 'react-native';
 
-export default function App() {
+const Home = () =>{
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -322,3 +322,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
+
+
+export default Home;

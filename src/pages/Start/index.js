@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from 'react-native-elements';
 import { useNavigation  } from '@react-navigation/native';
 
+
 const Start = () =>{
     const navigation = useNavigation();
 
@@ -18,7 +19,7 @@ const Start = () =>{
         <Image source={require('../../assets/virus.png')}  resizeMode="stretch" style={{height: 200, width: 260}}></Image>
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 3}}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>Covid-19</Text>
+    <Text style={{color: 'white', fontWeight: 'bold'}}>Covid-19</Text>
           <Text style={{color: 'white', fontWeight: 'bold',fontStyle: 'italic', marginBottom: 30}}>Aplicação destianada a analise de casos. </Text>
           <Button 
             title="Começar" 
