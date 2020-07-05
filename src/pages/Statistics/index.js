@@ -1,28 +1,117 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, ImageBackground, View, Text, TouchableOpacity, Image} from 'react-native'
-import { PieChart } from 'react-native-svg-charts'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import { PieChart, YAxis, LineChart, Grid } from 'react-native-svg-charts'
+import axios from 'axios'
+import ModalDropdown from 'react-native-modal-dropdown'
+import ObjStatesBrazil from '../../data/statesBrazil.json'
 
 
 export default function Statics(){
-    const [data, setData] = useState([88992, 35108, 12300])
+  const [data, setData] = useState([])
+  const [statesbrazil, setStatesbrazil] = useState([])
+  const [visible, setvisible] = useState(false)
+  const [visibleline, setVisibleline] = useState(false)
+  const [historystates, setHistorystates] = useState([])
+  const randomColor = ['#FFA500', '#66CDAA', '#FF6347'];
+  const contentInset = { top: 20, bottom: 20 }
 
-    const randomColor = ['#FFA500','#66CDAA', '#FF6347'];
+  const endpoints = {
+    brands : {
+      endpoint : 'https://devarthurribeiro.github.io/covid19-brazil-api/static/flags/'
+    }, 
+    history: {
+      endpoint : 'https://api.apify.com/v2/datasets/3S2T1ZBxB9zhRJTBB/items?format=json&clean=1'
+    },
+    stateDefult : {
+      endpoint : 'https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/CE'
+    },
+    getState : {
+      endpoint : 'https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/'
+    },
+    ImagemPerfilExemplo : {
+      endpoint : 'https://www.pngkey.com/png/detail/882-8822155_sonrisa-con-brackets-png-pessoas-sorrindo-com-aparelho.png'
+    }
+  }
 
-    const pieData = data
-        .filter((value) => value > 0)
-        .map((value, index) => ({
-            value,
-            svg: {
-                fill: randomColor[index],
-                onPress: () => console.log('press', index),
-            },
-            key: `pie-${index}`,
-        }))
+  useEffect(() => {
+    getValuesCE()
+    getStatesBrazil()
+    getHistoryConfirmedStates()
+  }, [])
 
-        function alterData(v1, v2, v3){
-          setData([v1, v2, v3])
-          console.log(data)
-        }        
+  function states_renderRow(row){
+    return(
+      <TouchableOpacity style={{height: 30, flexDirection:'row', marginLeft:20}}>
+        <Image 
+          style={{width: 20, height: 20}}
+          source={{uri: `${endpoints.brands.endpoint}${row.sigla}.png`}}  
+        />
+        <Text style={{fontSize: 20}}> {row.nome} </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  const pieData = data
+    .filter((value) => value > 0)
+    .map((value, index) => ({
+      value,
+      svg: {
+          fill: randomColor[index],
+          onPress: () => console.log('press', index),
+      },
+      key: `pie-${index}`,
+    }))
+        
+    async function getHistoryConfirmedStates(sigla){
+      const arrayPush = []
+      await axios.get(`${endpoints.history.endpoint}`)
+      .then(function(response){
+        const parseArr = response.data; 
+        parseArr.map((e,i)=>{
+          e.infectedByRegion.filter(function(item){
+            if(sigla)
+              return item.state == sigla
+            else  
+              return item.state == 'CE'
+          }).map((e, i) =>{
+            arrayPush.push(e.count)
+          })
+        })
+        setHistorystates(arrayPush)
+        setVisibleline(true)
+      })
+    }
+
+    async function getValuesCE(){
+      await axios.get(`${endpoints.stateDefult.endpoint}`)
+      .then(function(response){
+        const dadosCovid = response.data;
+        setData([dadosCovid['cases'], dadosCovid['suspects'], dadosCovid['deaths']]);
+        setvisible(true)
+      })
+    }
+
+    function getStatesBrazil(){
+      setStatesbrazil(ObjStatesBrazil.UF)
+    }
+
+    async function changeData(row){
+      setVisibleline(false)
+      getHistoryConfirmedStates(row.sigla);
+      setvisible(false)
+      await axios.get(`${endpoints.getState.endpoint}${row.sigla}`)
+      .then(function(response){
+        const dadosCovid = response.data;
+        setData(
+          [dadosCovid['cases'], 
+          dadosCovid['suspects'], 
+          dadosCovid['deaths']]
+          );
+        setvisible(true)
+      })
+    }
+
 
     return (
     <View style={styles.container}>
@@ -44,7 +133,7 @@ export default function Statics(){
                 <View style={styles.containerIcon}>
                   <View style={styles.ContainerphotoPerfil}>
                   <Image 
-                      source={{uri: 'https://www.pngkey.com/png/detail/882-8822155_sonrisa-con-brackets-png-pessoas-sorrindo-com-aparelho.png'}}
+                      source={{uri: `${endpoints.ImagemPerfilExemplo.endpoint}`}}
                       style={styles.photoPerfil}
                     />
                   </View>
@@ -52,61 +141,94 @@ export default function Statics(){
               </View>
               <View style={styles.containerHeader2}>
                 <Text style={styles.textHeader2}>ESTATÍSTICAS</Text>
+                  <View style={styles.ContainerDropdawn}>
+                    <Image
+                      source={require('../../../assets/images/place.png')}
+                      style={{width:21, height:21, marginLeft: 15}}
+                    />
+                    <ModalDropdown
+                      defaultValue={'Ceará, CE'}
+                      textStyle={{fontSize: 13}}
+                      options={statesbrazil}
+                      renderRow={(row) => states_renderRow(row)}
+                      renderButtonText={(row) => {return row.nome +", "+row.sigla}}
+                      onSelect={(index, row) => changeData(row)}
+                      dropdownStyle={{width: '89%', marginLeft: -35, borderRadius: 20, height: 400}}
+                    />
+                    <Image
+                      source={require('../../../assets/images/down-arrow.png')}
+                      style={{width:15, height:15, marginLeft:'auto', marginRight: 10 }}
+                    />
+                </View>
               </View>
             </View>
           </ImageBackground> 
         </View>
         <View style={styles.containerBody}>
-            <View style={{elevation: 24 ,flexDirection: "row", marginTop: -100, backgroundColor:'white', width:'90%', borderRadius: 20, height: 170, justifyContent:"center", alignItems:"center" }}>    
-                <PieChart 
-                animate={true}
-                animationDuration={90000} 
-                style={{ height: 130, width: 130, marginLeft: 15 }} 
-                data={pieData} 
-                
-                />
-                <View style={{width:'50%', height: '80%', paddingLeft: 20, paddingRight: 10, flexDirection:"column"}}>
-                    <View style={{flexDirection:"row"}}>
-                        <View style={{height: 15, width: 30, backgroundColor:'#FFA500'}}></View>
-                        <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
-                            <Text style={{textAlign:"center"}}>Confirmados</Text>
-                            <Text style={{fontWeight:'bold', fontSize:15}}>{data[0]}</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection:"row", marginTop: 10 }}>
-                        <View style={{height: 15, width: 30, backgroundColor:'#66CDAA'}}></View>
-                        <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
-                            <Text style={{textAlign:"center"}}>Recuperados</Text>
-                            <Text style={{fontWeight:'bold', fontSize:15}}>{data[1]}</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection:"row", marginTop: 10}}>
-                        <View style={{height: 15, width: 30, backgroundColor:'#FF6347'}}></View>
-                        <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
-                            <Text style={{textAlign:"center"}}>Mortes</Text>
-                            <Text style={{fontWeight:'bold', fontSize:15, alignSelf:"flex-end"}}>{data[2]}</Text>
-                        </View>
-                    </View>
-                </View>
+          <View style={{elevation: 25, flexDirection: "row", marginTop: -80, 
+          backgroundColor:'white', width:'90%', borderRadius: 20, height: 170, 
+          justifyContent:"center", alignItems:"center" }}>    
+            <ShimmerPlaceHolder 
+              autoRun={true} 
+              visible={visible}
+              style={{ height: 130, width: 130, marginLeft: 15, borderRadius: 70 }}
+            >
+              <PieChart 
+              style={{ height: 130, width: 130, marginLeft: 15 }} 
+              data={pieData} 
+              />
+            </ShimmerPlaceHolder> 
+              <View style={{width:'50%', height: '80%', paddingLeft: 20, paddingRight: 10, flexDirection:"column"}}>
+                  <View style={{flexDirection:"row"}}>
+                      <View style={{height: 15, width: 30, backgroundColor:'#FFA500'}}></View>
+                      <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
+                          <Text style={{textAlign:"center"}}>Confirmados</Text>
+                          <Text style={{fontWeight:'bold', fontSize:15}}>{data[0]}</Text>
+                      </View>
+                  </View>
+                  <View style={{flexDirection:"row", marginTop: 10 }}>
+                      <View style={{height: 15, width: 30, backgroundColor:'#66CDAA'}}></View>
+                      <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
+                          <Text style={{textAlign:"center"}}>Suspeitos</Text>
+                          <Text style={{fontWeight:'bold', fontSize:15}}>{data[1]}</Text>
+                      </View>
+                  </View>
+                  <View style={{flexDirection:"row", marginTop: 10}}>
+                      <View style={{height: 15, width: 30, backgroundColor:'#FF6347'}}></View>
+                      <View style={{flexDirection:"column", alignItems:"flex-end", marginLeft: 20, flex: 1}}>
+                          <Text style={{textAlign:"center"}}>Mortes</Text>
+                          <Text style={{fontWeight:'bold', fontSize:15, alignSelf:"flex-end"}}>{data[2]}</Text>
+                      </View>
+                  </View>
+              </View>
+          </View>
+          <ShimmerPlaceHolder 
+              autoRun={true} 
+              visible={visibleline}
+              style={{ marginTop:30, height: 260, width:'90%', elevation: 25, borderRadius: 20 }}
+            >
+              <View style={{ marginTop:30, height: 260, width:'90%', paddingLeft: 10, elevation: 25,
+              paddingRight:10, flexDirection: 'row', backgroundColor: 'white', borderRadius: 20 }}>               
+                  <YAxis
+                      data={historystates}
+                      contentInset={contentInset}
+                      svg={{
+                          fill: 'black',
+                          fontSize: 10,
+                      }}
+                      numberOfTicks={12}
+                      formatLabel={(value) => value}
+                  />
+                  <LineChart
+                      style={{ flex: 1, marginLeft: 20 }}
+                      data={historystates}
+                      svg={{ stroke: 'rgb(134, 65, 244)' }}
+                      contentInset={contentInset}
+                  >
+                      <Grid />
+                  </LineChart>
             </View>
-
-            <View>
-              <TouchableOpacity onPress={()=>alterData(20, 400, 200)}>
-                <Text>CLICK</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>alterData(230, 4400, 9200)}>
-                <Text>CLICK2</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>alterData(8860, 400, 2200)}>
-                <Text>CLICK2</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>alterData(664, 2200, 8200)}>
-                <Text>CLICK2</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>alterData(207, 7500, 3200)}>
-                <Text>CLICK2</Text>
-              </TouchableOpacity>
-            </View>
+          </ShimmerPlaceHolder>            
         </View>
     </View>
     )
@@ -114,6 +236,15 @@ export default function Statics(){
 
 
 const styles = StyleSheet.create({
+    ContainerDropdawn:{
+      backgroundColor: 'white', 
+      height: 30, 
+      marginTop: 20, 
+      width: '94%', 
+      borderRadius: 20,
+      alignItems: "center",
+      flexDirection: "row"
+    },
     prevencaoWidth50percentage:{
      width: '50%',
      justifyContent: "center",

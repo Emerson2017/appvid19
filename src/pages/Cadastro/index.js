@@ -49,7 +49,12 @@ const Cadastro = () =>{
         firebase.auth().createUserWithEmailAndPassword(email, senha).then(function(){
         
             storeData(1);
-            navigation.navigate('Home');
+            setLoad(false);
+            setMessage('Cadastro realizado com sucesso !'); 
+
+            setTimeout(()=>{
+              navigation.navigate('Login');
+            }, 2000); 
           
         }).catch(()=>{
           setLoad(false);

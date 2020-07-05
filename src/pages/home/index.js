@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView, Span } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView, Linking } from 'react-native';
+import { useNavigation  } from '@react-navigation/native';
 
 const Home = () =>{
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -30,7 +33,22 @@ const Home = () =>{
             </View>
             <View style={styles.containerHeader3}>
               <Text style={styles.text1Header3}>Meios de combate e retenção ao coronavírus</Text>
-              <Text style={styles.text2Header3}>Obtenha os dados mais atualizados sobre COVID 19 em todo o mundo e saiba como se prevenir</Text>
+              <Text style={styles.text2Header3}>Obtenha os dados mais atualizados sobre COVID 19 em todo o Brasil e saiba como se prevenir</Text>
+            </View>
+            <View style={{padding: 7, flexDirection:"row", width: '95%', height: 55, marginTop: 20}}>
+              <View style={{width: '50%', paddingRight: 13}}>
+                <TouchableOpacity
+                onPress={()=> Linking.openURL('tel:0800 275 1475')} 
+                style={{justifyContent:"center", alignItems:"center", height: '100%', backgroundColor:'#FF4500', borderRadius: 20}}>
+                  <Text style={{color:'white'}}>EMERGÊNCIA</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{width: '50%', paddingLeft: 13}}>
+                <TouchableOpacity style={{justifyContent:"center", alignItems:"center", height: '100%', 
+                backgroundColor:'#20B2AA', borderRadius: 20}}>
+                  <Text style={{color:'white'}}>AGENDA COVID</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </ImageBackground> 
@@ -131,7 +149,10 @@ const Home = () =>{
               </View>
             </ScrollView> 
           </View>
-          <TouchableOpacity style={{ flexDirection:"row", borderRadius: 18, width: '95%', height:70, backgroundColor: 'white', marginTop:30}}>
+          <TouchableOpacity 
+            style={{ flexDirection:"row", borderRadius: 18, width: '95%', height:70, backgroundColor: 'white', marginTop:30}}
+            onPress={()=>navigation.navigate('Statistics')}
+          >
             <View style={{ width:'30%', alignItems:"center", justifyContent:"center"}}>
               <Image
                 source={require('../../../assets/images/map.png')}
@@ -141,7 +162,7 @@ const Home = () =>{
             
             <View style={{width:'60%', justifyContent:"center"}}>
               <Text style={{color:'rgb(160, 32, 240)', fontSize: 17, fontWeight: 'bold'}}>CASOS</Text>
-              <Text style={{ fontSize:11 }}>VISÃO GLOBAL</Text>
+              <Text style={{ fontSize:11 }}>BRASIL</Text>
             </View>
             
             <View style={{ width:'10%', alignItems: "center", justifyContent:"center"}}>
